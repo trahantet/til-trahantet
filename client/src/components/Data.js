@@ -18,7 +18,6 @@ export default function Data() {
     }
   });
 
-  
   console.log(results);
   return (
     <div>
@@ -29,17 +28,21 @@ export default function Data() {
 
       {/* use map to return each chat as an individual div containing text */}
       <div id="posts-container">
-      {results.map((post, index) => {
-        return (
-          <div id="posts-container2">
-            <div key={index + "-author"}>{post.author}</div>
-            <div key={index + "-date"}>{post.date}</div>
-            <div key={index + "-content"}>{post.content}</div>
-            <div key={index + "-tags"}>{post.tags}</div>
-          </div>
-        );
-        
-      })}
+        {results.map((post, index) => {
+          return (
+            <div id="posts-container2">
+              <hr />
+              <h3 key={index + "-author"}>{post.author}</h3>
+              <h4 key={index + "-date"}>{post.date}</h4>
+              <p key={index + "-content"}>{post.content}</p>
+              <h4 key={index + "-tags"}>{post.tags}</h4>
+              <button id={index + "-edit"}>
+                {/* onclick="editBook()" */}
+                Edit Book Data
+              </button>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

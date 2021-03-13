@@ -35,7 +35,8 @@ app.post("/add", async (req, res) => {
     tags: [req.body.tags]
   });
   await newPost.save();
-  res.status(200).send('New entry added')
+//   res.status(200).send('New entry added')
+res.redirect("/")
   
 
 });
