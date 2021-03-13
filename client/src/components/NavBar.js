@@ -10,9 +10,9 @@ export default function NavBar() {
       <Link id="navBar-links" to={"/Data"}>
         Data
       </Link>
-      <Link id="navBar-links" to={"/Edit"}>
+      {/* <Link id="navBar-links" to={"/Edit"}>
         Edit
-      </Link>
+      </Link> */}
     </div>
     )
 }

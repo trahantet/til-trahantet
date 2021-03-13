@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 export default function Data() {
   // state for if the button is clicked.. starts as false
@@ -36,14 +37,17 @@ export default function Data() {
               <h4 key={index + "-date"}>{post.date}</h4>
               <p key={index + "-content"}>{post.content}</p>
               <h4 key={index + "-tags"}>{post.tags}</h4>
-              <button id={index + "-edit"}>
-                {/* onclick="editBook()" */}
-                Edit Book Data
-              </button>
+              <Link id="edit-button-link" to={"/Edit/"+ post._id}>
+                <button id={post._id + "-edit"}>
+                  Edit/Delete Book Data
+                </button>
+              </Link>
             </div>
           );
         })}
       </div>
+
+      {console.log()}
     </div>
   );
 }

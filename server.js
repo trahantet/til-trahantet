@@ -20,7 +20,7 @@ const PostSchema = new mongoose.Schema({
   tags: Array,
 });
 
-// let timeDisplay = new Date() 
+// let timeDisplay = new Date()
 // console.log(timeDisplay)
 // model
 const PostModel = mongoose.model("Post", PostSchema);
@@ -32,34 +32,50 @@ app.post("/add", async (req, res) => {
     author: req.body.author,
     date: Date.now(),
     content: req.body.content,
-    tags: [req.body.tags]
+    tags: [req.body.tags],
   });
   await newPost.save();
-//   res.status(200).send('New entry added')
-res.redirect("/")
-  
-
+  //   res.status(200).send('New entry added')
+  res.redirect("/");
 });
 
+app.get("/api", async (req, res) => {
+  // find all documents in the chats collection (as defined above)
+  const cursor = await PostModel.find({});
+  // create empty array to hold our results
+  let results = [];
+  // iterate over out cursor object to push each document into our array
+  await cursor.forEach((post) => {
+    results.push(post);
+  });
 
-app.get("/api", async(req,res) =>{
-
-// find all documents in the chats collection (as defined above)
-const cursor = await PostModel.find({});
-// create empty array to hold our results
-let results = [];
-// iterate over out cursor object to push each document into our array
-await cursor.forEach((post) => {
-  results.push(post);
+  // console.log(results)
+  // send the resulting array back
+  res.json(results);
 });
 
-// console.log(results)
-// send the resulting array back
-res.json(results);
-})
+//return a specific posts's data
+app.get("/api/:id", async (req, res) => {
+  let id = req.params.id;
+  let data = await PostModel.findOne({ _id: id });
 
+  let results = [];
+  // iterate over out cursor object to push each document into our array
+  results.push(data);
+  // // send the resulting array back
+  res.json(results);
+});
 
+app.post("api/:id", async (req, res) => {
+  let id = req.params.id;
+  console.log(id);
+  res.send("this is editing");
+});
+
+app.get("/*", (req, res) => {
+  res.send("Sorry this is not found");
+});
 
 app.listen(port, () => {
-    console.log("server is running");
-  });
+  console.log("server is running");
+});
