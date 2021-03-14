@@ -61,9 +61,18 @@ app.get("/api/:id", async (req, res) => {
 
   let results = [];
   // iterate over out cursor object to push each document into our array
-  results.push(data);
+   if(results.length === 0){
+        results.push(data.author);
+        results.push(data.content);
+        results.push(data.date);
+        results.push(data.tags)
+        results.push(data._id)  
+    }
+
+//   results.push(data);
   // // send the resulting array back
   res.json(results);
+
 });
 
 app.post("api/:id", async (req, res) => {
