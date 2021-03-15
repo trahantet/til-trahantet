@@ -24,26 +24,27 @@ const PostSchema = new mongoose.Schema({
 }]
 });
 
-// let timeDisplay = new Date()
-// console.log(timeDisplay)
-// model
+// establish model
 const PostModel = mongoose.model("Post", PostSchema);
+// import middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(staticDir));
 
+// add a new post to the database
 app.post("/add", async (req, res) => {
   let newPost = new PostModel({
     title: req.body.title,
     author: req.body.author,
-    date: Date.now(),
+    date:  new Date().getTime(),
     content: req.body.content,
     tags: req.body.tags.split(', ')
   });
   await newPost.save();
-  //   res.status(200).send('New entry added')
+
   res.redirect("/");
 });
 
+//  find all
 app.get("/api", async (req, res) => {
   // find all documents in the chats collection (as defined above)
   const cursor = await PostModel.find({});
@@ -59,14 +60,15 @@ app.get("/api", async (req, res) => {
   res.json(results);
 });
 
+// find posts conditionally/filter
 app.get("/filter", async(req, res) =>{
     let filter = req.query
     console.log(filter)
-    let key = Object.keys(filter)[0]
+    let key = Object.keys(filter)[0].toLowerCase()
     console.log(key)
     let temp = filter[key]
     console.log(temp)
-    const cursor = await PostModel.find({[key]: temp});
+    const cursor = await PostModel.find({[key]: `${temp}`});
     let results = [];
 
   // iterate over out cursor object to push each document into our array
@@ -84,6 +86,7 @@ app.get("/api/:id", async (req, res) => {
   res.json(data);
 });
 
+// edit a post
 app.post("/edit/:id", async (req, res) => {
   let id = req.params.id;
   await PostModel.findOneAndUpdate(
@@ -93,7 +96,7 @@ app.post("/edit/:id", async (req, res) => {
       author: req.body.author,
       date: Date.now(),
       content: req.body.content,
-      tags: [req.body.tags],
+      tags: req.body.tags.split(', '), // this means to search you need a space in your field
     },
     {
       new: true,
@@ -102,11 +105,13 @@ app.post("/edit/:id", async (req, res) => {
   res.redirect("/Data");
 });
 
+// delete a post
 app.get("/delete/:id", async (req, res) => {
   let id = req.params.id;
   await PostModel.findOneAndDelete({ _id: id });
 });
 
+// catch all
 app.get("/*", (req, res) => {
   res.send("Sorry this is not found");
 });

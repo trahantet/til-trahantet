@@ -19,25 +19,20 @@ export default function Edit() {
     }
   });
 
-  function updateTags(e){
-    let tagsArr = []
-    let tempTags = single.tags
-
-  }
 
   return (
     <div>
-      <h2>This is the Edit page</h2>
+      <h2>Make Changes:</h2>
 
       <div id="posts-container2">
         <hr />
-        <form id="form-container" onSubmit={updateTags} action={`/edit/${temp_id}`} method="POST">
+        <form id="form-container"  action={`/edit/${temp_id}`} method="POST">
           <label>
             <h3>{single.title}</h3>
             <input
               name="title"
               type="text"
-              value={single.title} // why does it refresh?
+              value={single.title} 
               onChange={(e) => setSingle({ title: e.target.value })}
             />
           </label>
@@ -46,7 +41,7 @@ export default function Edit() {
             <input
               name="author"
               type="text"
-              value={single.author} // why does it refresh?
+              value={single.author} 
               onChange={(e) => setSingle({ author: e.target.value})}
             />
           </label>
@@ -57,7 +52,7 @@ export default function Edit() {
               id="post-date"
               name="entry-date"
               value={single.date}
-              //   onChange={e => setSingle({date:e.target.value})}
+              // onChange={e => setSingle({date:e.target.value})}
             />
           </label>
 
@@ -95,8 +90,8 @@ export default function Edit() {
           Delete Post
         </button>
       </Link>
-      <Link id="edit-button-link" to={"/Data/"}>
-        <button style={{ width: "500px" }}>Cancel</button>
+      <Link id="edit-button-link" to={"/Data/"} style= {{textDecoration: "none"}}>
+        <button id="edit-button" style={{ width: "500px", display: "block"}}>Cancel</button>
       </Link>
     </div>
   );
