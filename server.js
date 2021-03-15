@@ -116,7 +116,7 @@ app.get("/delete/:id", async (req, res) => {
 
 // catch all
 app.get("/*", (req, res) => {
-  res.send("Sorry this is not found");
+  res.sendFile(staticDir + "index.html");
 });
 
 app.listen(port, () => {
