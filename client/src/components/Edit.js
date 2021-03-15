@@ -2,75 +2,58 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 export default function Edit() {
-  const [single, setSingle] = useState({
-    author: "",
-    date: "",
-    content: "",
-    tags: [],
-    _id: "",
-  });
-  const [temp, setTemp] = useState("");
+  const [single, setSingle] = useState([]);
 
   let temp_id = window.location.pathname.replace("/Edit/", "");
+  console.log(temp_id);
 
   useEffect(() => {
-    if (single.author === "") {
+    if (single.length === 0) {
       // get it by calling the api endpoint from server.js
       fetch("/api/" + temp_id)
         .then((res) => res.json())
         .then((restList) => {
           // then set it in state
-          setSingle({
-            author: restList[0],
-            date: restList[2],
-            content: restList[1],
-            tags: restList[3],
-            _id: restList[4],
-          });
+          setSingle(restList);
         });
     }
   });
 
-  // trying to update tags list
-
-  //  function changeTags(e){
-  //    let newTag= e.target.value
-  //    if(newTag){
-  //    setTemp(temp+newTag)}
-  //    let tagArr = single.tags
-  //    console.log(temp)
-  //    if(newTag === ","){
-  //     tagArr.push(temp)
-  //     console.log(tagArr)
-  //     setSingle({tags:tagArr})
-  //    }
-  //  }
-
   return (
     <div>
       <h2>This is the Edit page</h2>
+
       <div id="posts-container2">
         <hr />
-        <h3>{single.author}</h3>
-        <form id="form-container" action={`/edit/:id`} method="POST">
+        <form id="form-container" action={`/edit/${temp_id}`} method="POST">
           <label>
+            <h3>{single.title}</h3>
+            <input
+              name="title"
+              type="text"
+              value={single.title} // why does it refresh?
+              onChange={(e) => setSingle({ title: e.target.value })}
+            />
+          </label>
+          <label>
+            Author:
             <input
               name="author"
               type="text"
               value={single.author} // why does it refresh?
-              onChange={(e) => setSingle({ author: e.target.value})}
+              onChange={(e) => setSingle({ author: e.target.value })}
             />
           </label>
-          {/* <label for="start">
+          <label>
             Date of Post:
             <input
-              type="date"
+              type="text"
               id="post-date"
               name="entry-date"
               value={single.date}
-              onChange={e => setSingle({date:e.target.value})}
+              //   onChange={e => setSingle({date:e.target.value})}
             />
-          </label> */}
+          </label>
 
           <label>
             <textarea
@@ -81,21 +64,34 @@ export default function Edit() {
               onChange={(e) => setSingle({ content: e.target.value })}
             />
           </label>
-          {/* <label>
+          <label>
+            Tags:
             <input
               id="tags-container"
               name="tags"
               type="input"
               value={single.tags}
-              onChange={changeTags}
+              onChange={(e) => setSingle({ tags: e.target.value })}
             />
-          </label> */}
-          <input type="submit" value="Edit" />
+          </label>
+          <input type="submit" value="Edit" style={{ width: "500px" }} />
         </form>
       </div>
 
       {/* <button>Edit Post Data</button> */}
-      <button>Delete Post</button>
+      <Link id="edit-button-link" to={"/Data/"}>
+        <button
+          style={{ width: "500px" }}
+          onClick={() => {
+            fetch("/delete/" + temp_id);
+          }}
+        >
+          Delete Post
+        </button>
+      </Link>
+      <Link id="edit-button-link" to={"/Data/"}>
+        <button style={{ width: "500px" }}>Cancel</button>
+      </Link>
     </div>
   );
 }

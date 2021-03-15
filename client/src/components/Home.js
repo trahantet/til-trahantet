@@ -8,9 +8,12 @@ export default function Home() {
       <h3>Home Page</h3>
       <form id="form-container" action="/add" method="POST">
         <label>
+          <input name="title" type="text" placeholder="Title:" />
+        </label>
+        <label>
           <input name="author" type="text" placeholder="Author:" />
         </label>
-        <label for="start">
+        {/* <label for="start">
         Date of Post:
           <input
             type="date"
@@ -18,13 +21,23 @@ export default function Home() {
             name="entry-date"
             value="2018-07-22"
           />
-        </label>
+        </label> */}
 
         <label>
-            <input id= "text-container"name="content" type="textarea" placeholder="Today I learned...."/> 
+          <input
+            id="text-container"
+            name="content"
+            type="textarea"
+            placeholder="Today I learned...."
+          />
         </label>
         <label>
-            <input id= "tags-container"name="tags" type="input" placeholder="tags"/> 
+          <input
+            id="tags-container"
+            name="tags"
+            type="input"
+            placeholder="tags"
+          />
         </label>
         <input type="submit" />
       </form>

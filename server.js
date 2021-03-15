@@ -8,12 +8,14 @@ const { readdir } = require("fs");
 const port = process.env.PORT || 5000;
 const staticDir = path.resolve("./client/public");
 const app = express();
+mongoose.set("useFindAndModify", false);
 
 // Database setup
 // connection
 mongoose.connect("mongodb://localhost:27017/til");
 // schema
 const PostSchema = new mongoose.Schema({
+  title: String,
   author: String, // keys match names in input fields of form
   date: Date,
   content: String,
@@ -29,6 +31,7 @@ app.use(express.static(staticDir));
 
 app.post("/add", async (req, res) => {
   let newPost = new PostModel({
+    title: req.body.title,
     author: req.body.author,
     date: Date.now(),
     content: req.body.content,
@@ -58,27 +61,30 @@ app.get("/api", async (req, res) => {
 app.get("/api/:id", async (req, res) => {
   let id = req.params.id;
   let data = await PostModel.findOne({ _id: id });
-
-  let results = [];
-  // iterate over out cursor object to push each document into our array
-   if(results.length === 0){
-        results.push(data.author);
-        results.push(data.content);
-        results.push(data.date);
-        results.push(data.tags)
-        results.push(data._id)  
-    }
-
-//   results.push(data);
-  // // send the resulting array back
-  res.json(results);
-
+  res.json(data);
 });
 
-app.post("api/:id", async (req, res) => {
+app.post("/edit/:id", async (req, res) => {
   let id = req.params.id;
-  console.log(id);
-  res.send("this is editing");
+  await PostModel.findOneAndUpdate(
+    { _id: id },
+    {
+        title:req.body.title,
+      author: req.body.author,
+      date: Date.now(),
+      content: req.body.content,
+      tags: [req.body.tags],
+    },
+    {
+      new: true,
+    }
+  );
+  res.redirect("/Data");
+});
+
+app.get("/delete/:id", async (req, res) => {
+  let id = req.params.id;
+  await PostModel.findOneAndDelete({ _id: id });
 });
 
 app.get("/*", (req, res) => {
