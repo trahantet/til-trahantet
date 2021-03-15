@@ -12,7 +12,7 @@ mongoose.set("useFindAndModify", false);
 
 // Database setup
 // connection
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/til", {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser:true, 
   useUnifiedTopology:true
 });
