@@ -116,7 +116,7 @@ app.get("/delete/:id", async (req, res) => {
 
 // catch all
 app.get("/*", (req, res) => {
-  res.sendFile(staticDir + "index.html");
+  res.sendFile(staticDir + "/index.html");
 });
 
 app.listen(port, () => {
