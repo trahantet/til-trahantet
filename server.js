@@ -12,7 +12,7 @@ mongoose.set("useFindAndModify", false);
 
 // Database setup
 // connection
-mongoose.connect("mongodb://localhost:27017/til");
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/til");
 // schema
 const PostSchema = new mongoose.Schema({
   title: String,
