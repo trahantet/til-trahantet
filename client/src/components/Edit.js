@@ -19,13 +19,19 @@ export default function Edit() {
     }
   });
 
+  function updateTags(e){
+    let tagsArr = []
+    let tempTags = single.tags
+
+  }
+
   return (
     <div>
       <h2>This is the Edit page</h2>
 
       <div id="posts-container2">
         <hr />
-        <form id="form-container" action={`/edit/${temp_id}`} method="POST">
+        <form id="form-container" onSubmit={updateTags} action={`/edit/${temp_id}`} method="POST">
           <label>
             <h3>{single.title}</h3>
             <input
@@ -41,7 +47,7 @@ export default function Edit() {
               name="author"
               type="text"
               value={single.author} // why does it refresh?
-              onChange={(e) => setSingle({ author: e.target.value })}
+              onChange={(e) => setSingle({ author: e.target.value})}
             />
           </label>
           <label>
@@ -71,7 +77,7 @@ export default function Edit() {
               name="tags"
               type="input"
               value={single.tags}
-              onChange={(e) => setSingle({ tags: e.target.value })}
+              onChange={(e) => setSingle({ tags: e.target.value.split(',') })}
             />
           </label>
           <input type="submit" value="Edit" style={{ width: "500px" }} />

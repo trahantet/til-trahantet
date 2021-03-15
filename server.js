@@ -19,7 +19,9 @@ const PostSchema = new mongoose.Schema({
   author: String, // keys match names in input fields of form
   date: Date,
   content: String,
-  tags: Array,
+  tags: [{
+    type: String
+}]
 });
 
 // let timeDisplay = new Date()
@@ -35,7 +37,7 @@ app.post("/add", async (req, res) => {
     author: req.body.author,
     date: Date.now(),
     content: req.body.content,
-    tags: [req.body.tags],
+    tags: req.body.tags.split(', ')
   });
   await newPost.save();
   //   res.status(200).send('New entry added')
@@ -52,10 +54,28 @@ app.get("/api", async (req, res) => {
     results.push(post);
   });
 
-  // console.log(results)
+  console.log(results)
   // send the resulting array back
   res.json(results);
 });
+
+app.get("/filter", async(req, res) =>{
+    let filter = req.query
+    console.log(filter)
+    let key = Object.keys(filter)[0]
+    console.log(key)
+    let temp = filter[key]
+    console.log(temp)
+    const cursor = await PostModel.find({[key]: temp});
+    let results = [];
+
+  // iterate over out cursor object to push each document into our array
+  await cursor.forEach((post) => {
+    results.push(post);
+})
+console.log(results)    
+res.json(results)
+})
 
 //return a specific posts's data
 app.get("/api/:id", async (req, res) => {

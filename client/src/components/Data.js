@@ -22,10 +22,26 @@ export default function Data() {
   // when option is selected save it in selected state
   function handleChange(evt) {
     let target = evt.target;
+    console.log(target)
     setSelected(target.value);
   }
 
-  console.log(results);
+
+  function filter(evt) {
+      evt.preventDefault()
+      console.log(selected)
+      console.log(evt.target[0].value)
+      let url = `/filter?${selected}=${evt.target[0].value}`
+      console.log(url)
+    fetch(url)
+      .then((res) => res.json())
+      .then((restList) => {
+        // then set it in state
+        setResults(restList);
+      });
+  }
+
+  
   return (
     <div>
       <h1>All Posts</h1>
@@ -35,23 +51,25 @@ export default function Data() {
           <option value=""></option>
           <option value="title">Title</option>
           <option value="author">Author</option>
-          <option value="tag">Tag</option>
+          <option value="tags">Tag</option>
           {/* <option value="date">Date</option> */}
         </select>
         <div>Filter by: {selected}</div>
 
         <div className="filter">
           {selected && (
-            <form id="filter-container">
+            <form id="filter-container" onSubmit={filter}>
               <label>
                 <input name="filter" type="text" placeholder="Filter:" />
               </label>
+              <input type="submit" value="Filter"/>
             </form>
           )}
         </div>
 
         {results.map((post, index) => {
           return (
+            
             <div id="posts-container2">
               <hr />
               <h2 key={index + "-title"}>{post.title}</h2>
