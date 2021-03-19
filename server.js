@@ -40,7 +40,7 @@ app.post("/add", async (req, res) => {
     author: req.body.author,
     date:  new Date().getTime(),
     content: req.body.content,
-    tags: req.body.tags.split(', ')
+    tags: req.body.tags.replace(' ', '').split(', ')
   });
   await newPost.save();
 
@@ -99,7 +99,7 @@ app.post("/edit/:id", async (req, res) => {
       author: req.body.author,
       date: Date.now(),
       content: req.body.content,
-      tags: req.body.tags.split(', '), // this means to search you need a space in your field
+      tags: req.body.tags.replace(' ', '').split(', '), // this means to search you need a space in your field
     },
     {
       new: true,
