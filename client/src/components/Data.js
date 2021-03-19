@@ -75,7 +75,9 @@ export default function Data() {
               <h3 key={index + "-author"}>{post.author}</h3>
               <h4 key={index + "-date"}>{post.date}</h4>
               <p key={index + "-content"}>{post.content}</p>
-              <h4 key={index + "-tags"}>{post.tags + " "}</h4>
+              <h4 key={index + "-tags"}>{post.tags.map((item) => {
+               return item + ', '
+              })}</h4>
               {/* post.tags */}
               <Link id="edit-button-link" to={"/Edit/" + post._id}>
                 <button id={post._id + "-edit"}>Edit/Delete Post Data</button>
