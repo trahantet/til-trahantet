@@ -6,13 +6,16 @@ const path = require("path");
 const { readdir } = require("fs");
 // global variables
 const port = process.env.PORT || 5000;
-const staticDir = path.resolve("./client/public");
+const staticDir = path.resolve("./client/build");
 const app = express();
 mongoose.set("useFindAndModify", false);
 
 // Database setup
 // connection
-mongoose.connect("mongodb://localhost:27017/til");
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser:true, 
+  useUnifiedTopology:true
+});
 // schema
 const PostSchema = new mongoose.Schema({
   title: String,
@@ -113,7 +116,7 @@ app.get("/delete/:id", async (req, res) => {
 
 // catch all
 app.get("/*", (req, res) => {
-  res.send("Sorry this is not found");
+  res.sendFile(staticDir + "/index.html");
 });
 
 app.listen(port, () => {
